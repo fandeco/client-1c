@@ -1,0 +1,7 @@
+vendor
+.idea
+workspace.code-workspace
+cache
+test
+.phpunit.result.cache
+phpunit.phar
