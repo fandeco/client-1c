@@ -6,11 +6,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/fandeco/client-fandeco-1c"
+            "url": "https://github.com/fandeco/client-1c"
         }
     ],
     "require": {
-        "fandeco/client-fandeco-1c": "^1.0.0"
+        "fandeco/client-1c": "^1.0.0"
     }
 }
 ```
