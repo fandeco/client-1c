@@ -41,7 +41,7 @@ trait Send
             'timeout' => $this->timeout,
         ]);
 
-        if (count($this->error) === 0) {
+        if (!$this->error) {
             $result = null;
             $isError = false;
             $json = null;
@@ -63,6 +63,7 @@ trait Send
                 if (!$this->error) {
                     $this->error[] = "Ошибка клиента";
                 }
+
                 $response = $e->getResponse();
                 $isError = true;
                 $code = $e->getCode();
@@ -83,11 +84,9 @@ trait Send
                 $result = $response;
             }
 
-
             if (!$code && method_exists($e, 'getCode')) {
                 $code = $e->getCode();
             }
-
 
             if ($isError) {
                 $result = !empty($json) ? json_decode($json, true) : '';
