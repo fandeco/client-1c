@@ -135,7 +135,7 @@ class Method implements IMethod
 
     public function isError()
     {
-        return count($this->error) !== 0;
+        return !is_null(this->error);
     }
 
     public function getAllErrors()
