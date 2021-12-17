@@ -18,8 +18,8 @@
     "require": {
         "php": ">=7.0.0",
         "guzzlehttp/guzzle": "~6.0",
-        "monolog/monolog": "^2.2",
-        "symfony/cache": "^4.4"
+        "monolog/monolog": "2.2",
+        "symfony/cache": "4.4"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
