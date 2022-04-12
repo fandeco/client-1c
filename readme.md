@@ -28,32 +28,14 @@ https://www.dropbox.com/s/ahhwiy54fbu2lsv/Recording%201-11-22%20at%2016.46.15.mp
 ## Глобальные настройки
 ```php
 // Настройки авторизации для серверов
-use Fc\Config;
-Config::getInstance([
-    // Данные авторизации по секрверам
-    "FC_AUTH" => [ 
-        "region" => [
-            "login" => "",
-            "password" => "",
-        ],
-        "retail" => [
-            "login" => "",
-            "password" => "",
-        ],
-        "test" => [
-            "login" => "",
-            "password" => "",
-        ],
-        "crm" => [
-            "login" => "",
-            "password" => "",
-        ]
-    ],
-    // Полный путь для кеша
-    "FC_CACHE_DIR" => "/fc_cache",
-    // Время жизни кеша в сикундах
-    "FC_CACHE_TIME" => 300
-]);
+
+if (!defined('FC_REST_URL')) {
+    define('FC_REST_URL', ""); // Адрес основного rest сервера
+}
+if (!defined('FC_REST_TOKEN')) {
+    define('FC_REST_TOKEN', ""); // Токе если IP в не разрешенных находиться
+}
+
 
 //Удаления просроченного кеша
 use Fc\CacheDelete;
