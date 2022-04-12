@@ -7,14 +7,14 @@ class Config
     private static $instances = null;
 
     public static $config = [
-        "FC_REST_URL" => "https://rest.massive.ru/",
-        "FC_REST_LOGIN" => "VXDTB9lg4Uz4vkKsASAx",
-        "FC_REST_PASSWORD" => "VXDTB9lg4Uz4vkKsASAx",
+        "FC_REST_URL" => "",
+        "FC_REST_LOGIN" => "",
+        "FC_REST_PASSWORD" => "",
         "FC_SERVER" => [
-            "region" => "http://fandeco1c.ddns.net:7780/bb/hs/fandeco/",
-            "retail" => "http://fandeco1c.ddns.net:7780/br/hs/fandeco/",
-            "test" => "http://retail.1c.massive.ru/bs/hs/fandeco/",
-            "crm" => "http://fandeco1c.ddns.net:41132/crm/hs/fandeco/"
+            "region" => "",
+            "retail" => "",
+            "test" => "",
+            "crm" => ""
         ],
         "FC_METHODS" => [
             "Fc\Methods\LinksUpdate" => [
