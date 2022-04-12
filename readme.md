@@ -38,12 +38,14 @@ CacheDelete::getInstance();
 
 $Clinet = new SubmitToSite();
 $Clinet
+    ->to1c() // Для отправки запроса напрямую в 1с
     ->site('fandeco.ru')
     ->submit()
     ->cache() // Включает кеш
     ->cacheTime(300) // Задать время кеша
     ->setTimeOut(20) // Время ожидания ответа от сервера
     ->get();
+
 
 
 echo '<pre>';
