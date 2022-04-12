@@ -5,13 +5,13 @@ namespace Fc;
 use Fc\Config;
 use Fc\Interfaces\IMethod;
 use Fc\Exceptions\AuthException;
-use Fc\Traits\Send;
 use Fc\Exceptions\ConnectException;
+use GuzzleHttp;
+use Fc\Cache;
+use GuzzleHttp\Client;
 
 class Method implements IMethod
 {
-    use Send;
-
     protected $class = "";
 
     protected $params = [];
@@ -35,17 +35,31 @@ class Method implements IMethod
     /* @var string|null $_rest_url */
     private $_rest_url;
 
-    /* @var array $_auth */
-    private $_auth;
+    /* @var string $_token */
+    private $_token;
+
+    protected $isRequestTo1c = false;
+    /**
+     * @var null|array
+     */
+    private $server1c;
 
     public function __construct()
     {
         $this->class = get_called_class();
-        $this->_config();
+
+        if (!defined('FC_REST_URL')) {
+            throw new \Exception('Не указана константа FC_REST_URL');
+        }
+
+        if (!defined('FC_REST_TOKEN')) {
+            throw new \Exception('Не указана константа FC_REST_TOKEN');
+        }
+
+        $this->_rest_url = FC_REST_URL;
+        $this->_token = FC_REST_TOKEN;
         $this->defaultParams();
     }
-
-    protected $isRequestTo1c = false;
 
 
     /**
@@ -55,27 +69,47 @@ class Method implements IMethod
      */
     public function to1c($is = true)
     {
-        $config = Config::getInstance()->get();
-        if (!array_key_exists('FC_AUTH', $config)) {
-            throw new ConnectException('Не указан ключ в конфиге FC_AUTH');
-        }
-
-        if (!array_key_exists($this->_server, $config['FC_AUTH'])) {
-            throw new ConnectException('Не указаны данный для авторизации на сервере' . $this->_server);
-        }
-
-        $auth = $config['FC_AUTH'][$this->_server];
-        if (!array_key_exists('login', $auth)) {
-            throw new ConnectException('Не указаны login в конфиге для сервере' . $this->_server);
-        }
-
-        if (!array_key_exists('password', $auth)) {
-            throw new ConnectException('Не указаны password в конфиге для сервере' . $this->_server);
-        }
-
-        $this->setConfig($config['FC_SERVER'][$this->_server], $auth['login'], $auth['password']);
         $this->isRequestTo1c = $is;
         return $this;
+    }
+
+    public function sendTo1c()
+    {
+        return $this->isRequestTo1c;
+    }
+
+
+    public function getServer()
+    {
+        if ($this->isRequestTo1c) {
+            $Client = new Client();
+
+
+            $url = rtrim($this->_rest_url, '/');
+
+            $Response = $Client->post($url . '/servers', [
+                'json' => [
+                    'method' => $this->_uri
+                ]
+            ]);
+            $code = $Response->getStatusCode();
+
+            if ($code !== 200) {
+                $content = $Response->getBody()->getContents();
+                throw new \Exception($content);
+            }
+
+            $content = $Response->getBody()->getContents();
+            if (!empty($content)) {
+                $object = json_decode($content);
+                if (!empty($object->data->server)) {
+                    $this->server1c = (array)$object->data->server;
+                } else {
+                    throw new \Exception('Не удалось получить сервер для method');
+                }
+
+            }
+        }
     }
 
     public function cache($bool = true)
@@ -91,20 +125,6 @@ class Method implements IMethod
         return $this;
     }
 
-    private function setConfig($rest_url, $login, $password)
-    {
-        $this->_rest_url = $rest_url;
-        $this->_auth = [
-            'login' => $login,
-            'password' => $password,
-        ];
-    }
-
-    private function _config()
-    {
-        $config = Config::getInstance()->get();
-        $this->setConfig($config['FC_REST_URL'], $config['FC_REST_LOGIN'], $config['FC_REST_PASSWORD']);
-    }
 
     /**
      * @param $uri
@@ -135,7 +155,7 @@ class Method implements IMethod
 
     public function isError()
     {
-        return !is_null(this->error);
+        return !is_null($this->error);
     }
 
     public function getAllErrors()
@@ -195,6 +215,10 @@ class Method implements IMethod
 
     public function get()
     {
+
+        // Записываем сервер
+        $this->getServer();
+
         $this->validate();
         $this->response = $this->send();
         return $this;
@@ -204,5 +228,139 @@ class Method implements IMethod
     public function validate()
     {
 
+    }
+
+
+    private function send()
+    {
+        if (!$this->cache) {
+            $this->_response();
+        } else {
+            $this->_cache();
+        }
+        return $this->response;
+    }
+
+    private function getToken()
+    {
+        return $this->_token;
+    }
+
+    private function _response()
+    {
+        if ($this->sendTo1c()) {
+            $rest = $this->server1c['url']. $this->_uri;
+            $login = @$this->server1c['login'];
+            $password = @$this->server1c['password'];
+            $options = [
+                'auth' => [$login, $password, "basic"],
+            ];
+        } else {
+            $rest = $this->_url();
+            $options = [
+                'auth' => ['', $this->getToken(), "basic"],
+            ];
+        }
+
+
+        $options['json'] = [];
+        $params = $this->getParams();
+        $params['cache'] = $this->cacheRest;
+
+        if (!empty($params)) {
+            $options['json'] = $params;
+        }
+
+        $client = new GuzzleHttp\Client([
+            'headers' => ['Content-Type' => 'application/json'],
+            'verify' => false,
+            'timeout' => $this->timeout,
+        ]);
+
+        if (!$this->error) {
+            $result = null;
+            $isError = false;
+            $json = null;
+            $code = null;
+            try {
+                $response = $client->request($this->_method, $rest, $options);
+                $json = $response->getBody()->getContents();
+                $code = $response->getStatusCode();
+
+                if (!is_array(json_decode($json, true))) {
+                    $result = $json;
+                } else {
+                    $result = json_decode($json, true);
+                    if ($this->cache) {
+                        $cache = new Cache($this->cacheTime);
+                        $cache->set($this->_getHash(), $result);
+                    }
+                }
+            } catch (GuzzleHttp\Exception\ClientException $e) {
+                if (!$this->error) {
+                    $this->error[] = "Ошибка клиента";
+                }
+
+                $response = $e->getResponse();
+                $isError = true;
+                $code = $e->getCode();
+                $json = $response->getBody()->getContents();
+            } catch (GuzzleHttp\Exception\ServerException $e) {
+                if (!$this->error) $this->error[] = "Ошибка сервера";
+                $code = $e->getCode();
+                $response = $e->getResponse();
+                $isError = true;
+                $json = $response->getBody()->getContents();
+            } catch (GuzzleHttp\Exception\ConnectException $e) {
+                if (!$this->error) {
+                    $this->addError("Слишком долгий ответ от сервера");
+                }
+                $response = $e->getResponse();
+                $code = $e->getCode();
+                $isError = true;
+                $result = $response;
+            }
+
+            if (!$code && method_exists($e, 'getCode')) {
+                $code = $e->getCode();
+            }
+
+            if ($isError) {
+                $result = !empty($json) ? json_decode($json, true) : '';
+                if (!is_array($result)) {
+                    $result = $json;
+                }
+            }
+
+            $this->responseCode = $code;
+            $this->response = $result;
+        }
+    }
+
+    protected $responseCode = null;
+
+    private function _cache()
+    {
+        $hash = $this->_getHash();
+        $cache = new Cache($this->cacheTime);
+        if ($cache->isCache($hash)) {
+            $result = $cache->get($hash);
+            $this->response = json_decode($result, true);
+        } else {
+            $this->_response();
+        }
+    }
+
+    private function _getHash()
+    {
+        $hash = [];
+        $hash[] = $this->class;
+        $hash[] = $this->_auth;
+        $hash[] = $this->_method;
+        $hash[] = $this->_rest_url;
+        if (isset($this->formValue)) {
+            $hash[] = json_encode($this->formValue);
+        }
+        return md5(implode('', $hash));
     }
 }

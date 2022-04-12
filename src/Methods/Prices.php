@@ -11,7 +11,6 @@ class Prices extends Method
     protected $_server = 'retail';
     protected $_uri = 'prices';
 
-
     public function uuid($vendor_uuid = "")
     {
         $vendor_uuid = trim($vendor_uuid);

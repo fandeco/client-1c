@@ -14,6 +14,24 @@ use Fc\Tests\TestCase;
 class GetTaskByNumberTest extends TestCase
 {
 
+    public function testServerRest()
+    {
+
+        $Handler = new GetTaskByNumber();
+        $response = $Handler
+            ->to1c(true)
+            ->number('0000012501')
+            ->get()
+            ->getResponse();
+
+
+        echo '<pre>';
+        print_r($response);
+        die;
+
+    }
+
+
     public function testNumber()
     {
         $Handler = new GetTaskByNumber();

@@ -11,12 +11,11 @@ class PropertyReferenceTest extends TestCase
     {
         $Clinet = new PropertyReference();
         $response = $Clinet
-            ->setUri('get_tickets')
-            ->addParam('user_uuid', 'user_uuid')
-            ->addParam('tickets_type', 'tickets_type')
+            ->to1c()
             ->get()
             ->getResponse();
-        $this->assertEquals('get_tickets', $response['message']);
+
+        $this->assertArrayHasKey('array', $response);
 
     }
 

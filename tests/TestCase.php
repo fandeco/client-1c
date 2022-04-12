@@ -16,29 +16,8 @@ abstract class TestCase extends MockeryTestCase
 {
     protected function setUp(): void
     {
-        Config::getInstance([
-            "FC_AUTH" => [
-                "region" => [
-                    "login" => "webUserRest",
-                    "password" => "4G47r_3",
-                ],
-                "retail" => [
-                    "login" => "webUserRest",
-                    "password" => "4G47r_3",
-                ],
-                "test" => [
-                    "login" => "webUserRest",
-                    "password" => "4G47r_3",
-                ],
-                "crm" => [
-                    "login" => "webUserRest",
-                    "password" => "4G47r_3",
-                ]
-            ],
-            "FC_CACHE_TIME" => 500,
-            "FC_CACHE_DIR" => "cache/",
-        ]);
-
+        define('FC_REST_URL', "https://rest.massive.ru/");
+        define('FC_REST_TOKEN', "VXDTB9lg4Uz4vkKsASAx2");
         parent::setUp();
     }
 
