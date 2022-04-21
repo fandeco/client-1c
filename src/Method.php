@@ -50,7 +50,8 @@ class Method implements IMethod
             throw new \Exception('Не указана константа FC_REST_TOKEN');
         }
 
-        $this->_rest_url = FC_REST_URL;
+        $rest_url = rtrim(FC_REST_URL, '/') . '/';
+        $this->_rest_url = $rest_url;
         $this->_token = FC_REST_TOKEN;
         $this->defaultParams();
     }
