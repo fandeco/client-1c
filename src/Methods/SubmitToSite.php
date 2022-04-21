@@ -34,12 +34,6 @@ class SubmitToSite extends Method implements ISubmitToSite
         return $this;
     }
 
-    public function cache($bool = true)
-    {
-        $this->cache = $bool;
-        return $this;
-    }
-
     public function validate()
     {
         if (empty($this->formValue['site'])) {

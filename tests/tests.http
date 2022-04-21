@@ -1,0 +1,8 @@
+POST https://rest.massive.ru/servers
+Content-Type: application/json
+
+{
+  "method" : "prices"
+}
+
+###

@@ -7,7 +7,6 @@ use Fc\Interfaces\IMethod;
 use Fc\Exceptions\AuthException;
 use Fc\Exceptions\ConnectException;
 use GuzzleHttp;
-use Fc\Cache;
 use GuzzleHttp\Client;
 
 class Method implements IMethod
@@ -18,12 +17,6 @@ class Method implements IMethod
 
     protected $timeout = 30;
 
-    protected $cache = false;
-
-    protected $cacheTime = 0;
-
-    protected $cacheRest = true;
-
     protected $error = null;
 
     protected $response = [];
@@ -31,6 +24,7 @@ class Method implements IMethod
 
     protected $_server = null;
     protected $_method = 'POST';
+    protected $_auth = null;
 
     /* @var string|null $_rest_url */
     private $_rest_url;
@@ -112,20 +106,6 @@ class Method implements IMethod
         }
     }
 
-    public function cache($bool = true)
-    {
-        $this->cache = $bool;
-        return $this;
-    }
-
-
-    public function cacheRest($bool = true)
-    {
-        $this->cacheRest = $bool;
-        return $this;
-    }
-
-
     /**
      * @param $uri
      * @return $this
@@ -181,11 +161,6 @@ class Method implements IMethod
         $this->error[] = $msg;
     }
 
-    public function cacheTime(int $time)
-    {
-        $this->cacheTime = $time;
-        return $this;
-    }
 
     /**
      * Параметры по умолчанию
@@ -233,11 +208,7 @@ class Method implements IMethod
 
     private function send()
     {
-        if (!$this->cache) {
-            $this->_response();
-        } else {
-            $this->_cache();
-        }
+        $this->_response();
         return $this->response;
     }
 
@@ -249,7 +220,7 @@ class Method implements IMethod
     private function _response()
     {
         if ($this->sendTo1c()) {
-            $rest = $this->server1c['url']. $this->_uri;
+            $rest = $this->server1c['url'] . $this->_uri;
             $login = @$this->server1c['login'];
             $password = @$this->server1c['password'];
             $options = [
@@ -265,7 +236,6 @@ class Method implements IMethod
 
         $options['json'] = [];
         $params = $this->getParams();
-        $params['cache'] = $this->cacheRest;
 
         if (!empty($params)) {
             $options['json'] = $params;
@@ -291,10 +261,6 @@ class Method implements IMethod
                     $result = $json;
                 } else {
                     $result = json_decode($json, true);
-                    if ($this->cache) {
-                        $cache = new Cache($this->cacheTime);
-                        $cache->set($this->_getHash(), $result);
-                    }
                 }
             } catch (GuzzleHttp\Exception\ClientException $e) {
                 if (!$this->error) {
@@ -339,17 +305,6 @@ class Method implements IMethod
 
     protected $responseCode = null;
 
-    private function _cache()
-    {
-        $hash = $this->_getHash();
-        $cache = new Cache($this->cacheTime);
-        if ($cache->isCache($hash)) {
-            $result = $cache->get($hash);
-            $this->response = json_decode($result, true);
-        } else {
-            $this->_response();
-        }
-    }
 
     private function _getHash()
     {

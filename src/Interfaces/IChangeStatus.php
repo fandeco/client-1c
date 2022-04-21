@@ -2,7 +2,6 @@
 namespace Fc\Interfaces;
 
 interface IChangeStatus{
-    public function cache($bool);
 
     public function apiKey($api_key);
 

@@ -2,7 +2,6 @@
 namespace Fc\Interfaces;
 
 interface IPrices{
-    public function cache($bool);
 
     public function uuid($vendor_uuid);
 

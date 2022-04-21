@@ -2,7 +2,6 @@
 namespace Fc\Interfaces;
 
 interface IOrderSend{
-    public function cache($bool);
 
     public function number($number);
 
