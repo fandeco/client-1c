@@ -1,23 +1,25 @@
 ### Настройки
+
 Клиент 1с
 
 ## Подключения в composer.json
+
 ```json
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/fandeco/client-1c"
-        }
-    ],
-    "require": {
-        "fandeco/client-1c": "^1.0.0"
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/fandeco/client-1c"
     }
+  ],
+  "require": {
+    "fandeco/client-1c": "^1.0.0"
+  }
 }
 ```
 
-
 ## Глобальные настройки
+
 ```php
 // Настройки авторизации для серверов
 
@@ -41,11 +43,8 @@ $Clinet
     ->to1c() // Для отправки запроса напрямую в 1с
     ->site('fandeco.ru')
     ->submit()
-    ->cache() // Включает кеш
-    ->cacheTime(300) // Задать время кеша
     ->setTimeOut(20) // Время ожидания ответа от сервера
     ->get();
-
 
 
 echo '<pre>';
@@ -54,6 +53,5 @@ print_r($Clinet->getAllErrors());
 die;
 
 ```
-
 
 ### Запуск тестов
