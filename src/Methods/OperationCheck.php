@@ -2,9 +2,9 @@
 
 namespace Fc\Methods;
 
+use Fc\Interfaces\IOperationCheck;
 use Fc\Method;
 use Fc\Traits\Send;
-use Fc\Interfaces\IOperationCheck;
 
 class OperationCheck extends Method implements IOperationCheck
 {

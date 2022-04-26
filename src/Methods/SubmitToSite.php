@@ -2,8 +2,8 @@
 
 namespace Fc\Methods;
 
-use Fc\Method;
 use Fc\Interfaces\ISubmitToSite;
+use Fc\Method;
 
 class SubmitToSite extends Method implements ISubmitToSite
 {

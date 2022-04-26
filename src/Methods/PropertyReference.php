@@ -1,9 +1,9 @@
 <?php
 namespace Fc\Methods;
 
+use Fc\Interfaces\IDefaultMethod;
 use Fc\Method;
 use Fc\Traits\Send;
-use Fc\Interfaces\IDefaultMethod;
 
 class PropertyReference extends Method implements IDefaultMethod
 {

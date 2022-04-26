@@ -2,10 +2,7 @@
 
 namespace Fc;
 
-use Fc\Config;
 use Fc\Interfaces\IMethod;
-use Fc\Exceptions\AuthException;
-use Fc\Exceptions\ConnectException;
 use GuzzleHttp;
 use GuzzleHttp\Client;
 

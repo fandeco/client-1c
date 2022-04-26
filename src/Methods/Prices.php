@@ -4,7 +4,6 @@ namespace Fc\Methods;
 
 use Fc\Method;
 use Fc\Traits\Send;
-use Fc\Interfaces\IPrices;
 
 class Prices extends Method
 {

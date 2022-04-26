@@ -2,9 +2,9 @@
 
 namespace Fc\Methods;
 
+use Fc\Interfaces\IDefaultMethod;
 use Fc\Method;
 use Fc\Traits\Send;
-use Fc\Interfaces\IDefaultMethod;
 
 /**
  * Отправка изображений

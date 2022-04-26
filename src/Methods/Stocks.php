@@ -1,8 +1,8 @@
 <?php
 namespace Fc\Methods;
 
-use Fc\Method;
 use Fc\Interfaces\IStocks;
+use Fc\Method;
 
 class Stocks extends Method implements IStocks
 {

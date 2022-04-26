@@ -1,9 +1,9 @@
 <?php
 namespace Fc\Methods;
 
+use Fc\Interfaces\IChangeStatus;
 use Fc\Method;
 use Fc\Traits\Send;
-use Fc\Interfaces\IChangeStatus;
 
 class ChangeStatusCheck extends Method implements IChangeStatus
 {

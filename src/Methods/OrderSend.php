@@ -1,9 +1,9 @@
 <?php
 namespace Fc\Methods;
 
+use Fc\Interfaces\IOrderSend;
 use Fc\Method;
 use Fc\Traits\Send;
-use Fc\Interfaces\IOrderSend;
 
 class OrderSend extends Method implements IOrderSend
 {
