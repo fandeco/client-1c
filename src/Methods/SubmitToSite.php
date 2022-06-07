@@ -36,11 +36,11 @@ class SubmitToSite extends Method implements ISubmitToSite
 
     public function validate()
     {
-        if (empty($this->formValue['site'])) {
+        if (empty($this->params['site'])) {
             $this->addError("Добавьте site (домен сайта для которого хотите получить товары)");
         }
 
-        if (empty($this->formValue['mode'])) {
+        if (empty($this->params['mode'])) {
             $this->addError("Укажите mode, submit - товары с галкой 'Выгружать на сайт', full - все товары в том числе которые не нужно выгружать на сайт");
         }
     }
