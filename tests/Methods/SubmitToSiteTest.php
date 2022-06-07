@@ -15,14 +15,14 @@ class SubmitToSiteTest extends TestCase
 {
     public function testSite()
     {
-        $Clinet = new SubmitToSite();
+        $Client = new SubmitToSite();
 
-        $Clinet
+        $Client
             ->site('fandeco.ru')
             ->submit()
             ->get();
 
-        $count = count($Clinet->getResponse()['response']['array']);
+        $count = count($Client->getResponse()['response']['array']);
         $this->assertEqualsWithDelta(120000, $count, 120000, "Маловато чето!");
     }
 }
