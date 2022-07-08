@@ -1,7 +1,7 @@
 {
     "name": "fandeco/client-1c",
     "license": "MIT",
-    "version": "2.0.11",
+    "version": "2.0.12",
     "authors": [
         {
             "name": "indotcode",
@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "tests" : "phpunit",
-        "up:release": "gh release create \"2.0.11\" --generate-notes"
+        "up:release": "gh release create \"2.0.12\" --generate-notes"
     },
     "keywords": [
         "client",
