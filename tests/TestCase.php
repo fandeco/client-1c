@@ -16,8 +16,9 @@ abstract class TestCase extends MockeryTestCase
 {
     protected function setUp(): void
     {
-        define('FC_REST_URL', "");
-        define('FC_REST_TOKEN', "");
+		define('FC_REST_URL', "https://rest.massive.ru/");
+		define('FC_REST_TOKEN', "");
+		require_once dirname(__DIR__, 1) . '/vendor/autoload.php';
         parent::setUp();
     }
 
