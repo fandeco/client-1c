@@ -6,3 +6,5 @@ test
 .phpunit.result.cache
 phpunit.phar
 /tests/t.php
+
+.project-manager/
