@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "tests" : "phpunit",
-        "up:release": "gh release create \"2.0.13\" --generate-notes"
+        "up:release": "gh release create \"2.0.14\" --generate-notes"
     },
     "keywords": [
         "client",
