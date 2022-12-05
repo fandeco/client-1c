@@ -13,7 +13,7 @@
 
 		public function name($marketplace_name)
 		{
-			if (!in_array($marketplace_name, ['wildberries', 'wildberries2', 'beru', 'beru2', 'ozon'])) {
+			if (!in_array($marketplace_name, ['wildberries', 'wildberries2', 'beru', 'beru2', 'ozon','goods'])) {
 				$this->addError("неправильное имя маркетплейса");
 			}
 			$this->addParam('marketplace_name', $marketplace_name);
