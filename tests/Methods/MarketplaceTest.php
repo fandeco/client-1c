@@ -11,6 +11,9 @@ namespace Fc\Tests\Methods;
 use Fc\Methods\Marketplace;
 use Fc\Methods\Stocks;
 use Fc\Tests\TestCase;
+use GuzzleHttp\HandlerStack;
+use GuzzleLogMiddleware\LogMiddleware;
+use Monolog\Logger;
 
 class MarketplaceTest extends TestCase
 {
@@ -24,4 +27,18 @@ class MarketplaceTest extends TestCase
         $count = count($Clinet->getData());
         $this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
     }
+
+	public function testHandler()
+	{
+		$Clinet = new Marketplace();
+		$logger = new Logger('test');
+		$stack = HandlerStack::create();
+		$stack->push(new LogMiddleware($logger));
+		$Clinet
+			->setHandler($stack)
+			->name('ozon')
+			->get();
+		$count = count($Clinet->getData());
+		$this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
+	}
 }
