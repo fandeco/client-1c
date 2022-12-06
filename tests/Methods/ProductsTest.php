@@ -8,13 +8,13 @@ class ProductsTest extends TestCase
 {
     public function testSite()
     {
-        $Clinet = new Products();
-        $Clinet
+        $Client = new Products();
+        $Client
             ->artikuls(["4690389138546_elektrostandard"])
             ->get();
-        $this->assertArrayHasKey('4690389138546_elektrostandard', $Clinet->getResponse()['products'], "Продукта нет!");
+        $this->assertArrayHasKey('4690389138546_elektrostandard', $Client->getResponse()['products'], "Продукта нет!");
         // echo '<pre>';
-        // print_r($Clinet->getResponse());
+        // print_r($Client->getResponse());
         // die;
     }
 }

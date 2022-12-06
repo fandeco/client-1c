@@ -9,8 +9,8 @@ class PropertyReferenceTest extends TestCase
 {
     public function testSetUri()
     {
-        $Clinet = new PropertyReference();
-        $response = $Clinet
+        $Client = new PropertyReference();
+        $response = $Client
             ->to1c()
             ->get()
             ->getResponse();
@@ -21,29 +21,29 @@ class PropertyReferenceTest extends TestCase
 
     public function testTo1C()
     {
-        $Clinet = new PropertyReference();
-        $response = $Clinet
+        $Client = new PropertyReference();
+        $response = $Client
             ->to1c()// Отправка запрос в 1с
             ->setTimeOut(5)
             ->get()
             ->getResponse();
 
-        $this->assertTrue($Clinet->isError());
-        $error = $Clinet->getAllErrors('responseCode');
+        $this->assertTrue($Client->isError());
+        $error = $Client->getAllErrors('responseCode');
         $this->assertEquals(0, $error['responseCode']);
 
     }
 
     public function testNoTo1C()
     {
-        $Clinet = new PropertyReference();
-        $response = $Clinet
+        $Client = new PropertyReference();
+        $response = $Client
             ->setTimeOut(5)
             ->get()
             ->getResponse();
 
 
-        $this->assertNotTrue($Clinet->isError());
+        $this->assertNotTrue($Client->isError());
 
     }
 }

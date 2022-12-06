@@ -20,25 +20,25 @@ class MarketplaceTest extends TestCase
 
     public function testSite()
     {
-        $Clinet = new Marketplace();
-        $Clinet
+        $Client = new Marketplace();
+        $Client
             ->name('ozon')
             ->get();
-        $count = count($Clinet->getData());
+        $count = count($Client->getData());
         $this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
     }
 
 	public function testHandler()
 	{
-		$Clinet = new Marketplace();
+		$Client = new Marketplace();
 		$logger = new Logger('test');
 		$stack = HandlerStack::create();
 		$stack->push(new LogMiddleware($logger));
-		$Clinet
+		$Client
 			->setHandler($stack)
 			->name('ozon')
 			->get();
-		$count = count($Clinet->getData());
+		$count = count($Client->getData());
 		$this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
 	}
 }

@@ -38,8 +38,8 @@ use Fc\Methods\SubmitToSite;
 CacheDelete::getInstance();
 
 
-$Clinet = new SubmitToSite();
-$Clinet
+$Client = new SubmitToSite();
+$Client
     ->to1c() // Для отправки запроса напрямую в 1с
     ->site('fandeco.ru')
     ->submit()
@@ -48,8 +48,8 @@ $Clinet
 
 
 echo '<pre>';
-print_r($Clinet->getResponse());
-print_r($Clinet->getAllErrors());
+print_r($Client->getResponse());
+print_r($Client->getAllErrors());
 die;
 
 ```

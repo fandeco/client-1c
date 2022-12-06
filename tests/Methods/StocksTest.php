@@ -16,11 +16,11 @@ class StocksTest extends TestCase
 
     public function testSite()
     {
-        $Clinet = new Stocks();
-        $Clinet
+        $Client = new Stocks();
+        $Client
             ->uuid('ad66b8f8-a535-11e7-812a-005056a9741d')
             ->get();
-        $count = count($Clinet->getResponse());
+        $count = count($Client->getResponse());
         $this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
     }
 }

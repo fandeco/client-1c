@@ -8,15 +8,15 @@ class PropertiesWarehouseTest extends TestCase
 {
     public function testSite()
     {
-        $Clinet = new PropertiesWarehouse();
+        $Client = new PropertiesWarehouse();
 
-        $Clinet
+        $Client
             ->get();
-        $count = count($Clinet->getResponse());
+        $count = count($Client->getResponse());
         $this->assertEqualsWithDelta(50, $count, 50, "Маловато чето!");
-        $this->assertArrayHasKey('warehouse_id', $Clinet->getResponse()['warehouses'][0], "Криво чето!");
+        $this->assertArrayHasKey('warehouse_id', $Client->getResponse()['warehouses'][0], "Криво чето!");
         // echo '<pre>';
-        // print_r($Clinet->getResponse());
+        // print_r($Client->getResponse());
         // die;
     }
 }
