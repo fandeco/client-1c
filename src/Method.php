@@ -265,12 +265,20 @@ class Method implements IMethod
         if (!empty($params)) {
             $options['json'] = $params;
         }
-
-        $client = new GuzzleHttp\Client([
-            'headers' => ['Content-Type' => 'application/json'],
-            'verify' => false,
-            'timeout' => $this->timeout,
-        ]);
+		if($this->handler) {
+			$client = new GuzzleHttp\Client([
+												'handler'=>$this->handler,
+												'headers' => ['Content-Type' => 'application/json'],
+												'verify' => false,
+												'timeout' => $this->timeout,
+											]);
+		}else {
+			$client = new GuzzleHttp\Client([
+												'headers' => ['Content-Type' => 'application/json'],
+												'verify'  => FALSE,
+												'timeout' => $this->timeout,
+											]);
+		}
 
         if (!$this->error) {
             $result = null;
