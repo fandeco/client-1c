@@ -62,6 +62,10 @@ class Method implements IMethod
         $this->defaultParams();
     }
 
+    public function getServer1C()
+    {
+        return $this->server1c;
+    }
 
     /**
      * После вызова обращение будет уходить напрямую в 1с минуя rest сайт
