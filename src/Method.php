@@ -36,29 +36,34 @@ class Method implements IMethod
      * @var null|array
      */
     private $server1c;
-	/**
-	 * @var HandlerStack|null
-	 */
-	private $handler;
+    /**
+     * @var HandlerStack|null
+     */
+    private $handler;
 
-	/**
-	 * @throws Exception
-	 */
-	public function __construct()
+    /**
+     * @throws Exception
+     */
+    public function __construct($rest_url = null, $token = null)
     {
         $this->class = get_called_class();
-
-        if (!defined('FC_REST_URL')) {
-            throw new Exception('Не указана константа FC_REST_URL');
+        if (is_null($rest_url)) {
+            if (!defined('FC_REST_URL')) {
+                throw new Exception('Не указана константа FC_REST_URL');
+            }
+            $rest_url = FC_REST_URL;
         }
 
-        if (!defined('FC_REST_TOKEN')) {
-            throw new Exception('Не указана константа FC_REST_TOKEN');
+        if (is_null($token)) {
+            if (!defined('FC_REST_TOKEN')) {
+                throw new Exception('Не указана константа FC_REST_TOKEN');
+            }
+            $token = FC_REST_TOKEN;
         }
 
-        $rest_url = rtrim(FC_REST_URL, '/') . '/';
+        $rest_url = rtrim($rest_url, '/') . '/';
         $this->_rest_url = $rest_url;
-        $this->_token = FC_REST_TOKEN;
+        $this->_token = $token;
         $this->defaultParams();
     }
 
@@ -83,28 +88,29 @@ class Method implements IMethod
         return $this->isRequestTo1c;
     }
 
-	/**
-	 * Установить guzzle handler
-	 * @return $this
-	 */
-	public function setHandler(HandlerStack $stack){
-		$this->handler = $stack;
-		return $this;
-	}
+    /**
+     * Установить guzzle handler
+     * @return $this
+     */
+    public function setHandler(HandlerStack $stack)
+    {
+        $this->handler = $stack;
+        return $this;
+    }
 
-	/**
-	 * @throws Exception
-	 */
-	public function getServer()
+    /**
+     * @throws Exception
+     */
+    public function getServer()
     {
         if ($this->isRequestTo1c) {
-			if(!$this->handler) {
-				$Client = new Client();
-			}else{
-				$Client = new Client([
-										 'handler' => $this->handler,
-									 ]);
-			}
+            if (!$this->handler) {
+                $Client = new Client();
+            } else {
+                $Client = new Client([
+                    'handler' => $this->handler,
+                ]);
+            }
 
 
             $url = rtrim($this->_rest_url, '/');
@@ -145,11 +151,11 @@ class Method implements IMethod
     }
 
 
-	/**
-	 * GuzzelClinet timeout
-	 * @param int $time
-	 * @return Method
-	 */
+    /**
+     * GuzzelClinet timeout
+     * @param int $time
+     * @return Method
+     */
     public function setTimeOut(int $time)
     {
         $this->timeout = $time;
@@ -269,20 +275,20 @@ class Method implements IMethod
         if (!empty($params)) {
             $options['json'] = $params;
         }
-		if($this->handler) {
-			$client = new GuzzleHttp\Client([
-												'handler'=>$this->handler,
-												'headers' => ['Content-Type' => 'application/json'],
-												'verify' => false,
-												'timeout' => $this->timeout,
-											]);
-		}else {
-			$client = new GuzzleHttp\Client([
-												'headers' => ['Content-Type' => 'application/json'],
-												'verify'  => FALSE,
-												'timeout' => $this->timeout,
-											]);
-		}
+        if ($this->handler) {
+            $client = new GuzzleHttp\Client([
+                'handler' => $this->handler,
+                'headers' => ['Content-Type' => 'application/json'],
+                'verify' => false,
+                'timeout' => $this->timeout,
+            ]);
+        } else {
+            $client = new GuzzleHttp\Client([
+                'headers' => ['Content-Type' => 'application/json'],
+                'verify' => FALSE,
+                'timeout' => $this->timeout,
+            ]);
+        }
 
         if (!$this->error) {
             $result = null;
@@ -310,8 +316,8 @@ class Method implements IMethod
                 $json = $response->getBody()->getContents();
             } catch (GuzzleHttp\Exception\ServerException $e) {
                 if (!$this->error) {
-					$this->error[] = "Ошибка сервера";
-				}
+                    $this->error[] = "Ошибка сервера";
+                }
                 $code = $e->getCode();
                 $response = $e->getResponse();
                 $isError = true;
@@ -320,7 +326,7 @@ class Method implements IMethod
                 if (!$this->error) {
                     $this->addError("Слишком долгий ответ от сервера");
                 }
-                $response = method_exists($e,'getResponse') ?$e->getResponse() : null;
+                $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
                 $code = $e->getCode();
                 $isError = true;
                 $result = $response;

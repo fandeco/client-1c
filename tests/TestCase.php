@@ -9,7 +9,6 @@
 namespace Fc\Tests;
 
 
-use Fc\Config;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 abstract class TestCase extends MockeryTestCase
