@@ -8,16 +8,16 @@
         }
     ],
     "scripts": {
-        "tests" : "phpunit",
-        "up:release": "gh release create \"2.0.20\" --generate-notes"
+        "tests" : "phpunit --testdox",
+        "up:release": "gh release create \"2.0.21\" --generate-notes"
     },
     "keywords": [
         "client",
         "fandeco"
     ],
     "require": {
-        "php": ">=7.0.0",
-        "guzzlehttp/guzzle": "^6.5.5",
+        "php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.2",
         "monolog/monolog": "2.2"
     },
     "require-dev": {

@@ -11,7 +11,6 @@ class PropertyReferenceTest extends TestCase
     {
         $Client = new PropertyReference();
         $response = $Client
-            ->to1c()
             ->get()
             ->getResponse();
 

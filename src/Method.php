@@ -320,7 +320,7 @@ class Method implements IMethod
                 if (!$this->error) {
                     $this->addError("Слишком долгий ответ от сервера");
                 }
-                $response = $e->getResponse();
+                $response = method_exists($e,'getResponse') ?$e->getResponse() : null;
                 $code = $e->getCode();
                 $isError = true;
                 $result = $response;

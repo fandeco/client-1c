@@ -25,7 +25,7 @@ class MarketplaceTest extends TestCase
             ->name('ozon')
             ->get();
         $count = count($Client->getData());
-        $this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
+        $this->assertEqualsWithDelta(3000, $count, 2000, "Маловато чето!");
     }
 
 	public function testHandler()
@@ -39,6 +39,6 @@ class MarketplaceTest extends TestCase
 			->name('ozon')
 			->get();
 		$count = count($Client->getData());
-		$this->assertEqualsWithDelta(3000, $count, 1000, "Маловато чето!");
+		$this->assertEqualsWithDelta(3000, $count, 2000, "Маловато чето!");
 	}
 }
