@@ -32,11 +32,7 @@ if (!defined('FC_REST_TOKEN')) {
 
 
 //Удаления просроченного кеша
-use Fc\CacheDelete;
 use Fc\Methods\SubmitToSite;
-
-CacheDelete::getInstance();
-
 
 $Client = new SubmitToSite();
 $Client
