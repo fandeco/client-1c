@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "tests" : "phpunit --testdox",
-        "up:release": "gh release create \"2.0.22\" --generate-notes"
+        "up:release": "gh release create \"2.0.23\" --generate-notes"
     },
     "keywords": [
         "client",
@@ -18,7 +18,7 @@
     "require": {
         "php": ">=7.4",
         "guzzlehttp/guzzle": "^7.2",
-        "monolog/monolog": "2.2"
+        "monolog/monolog": "^2.2"
     },
     "require-dev": {
         "gmponos/guzzle_logger": "^2.2",
