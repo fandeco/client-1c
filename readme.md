@@ -37,7 +37,7 @@ use Fc\Methods\SubmitToSite;
 $Client = new SubmitToSite();
 $Client
     ->to1c() // Для отправки запроса напрямую в 1с
-    ->site('fandeco.ru')
+    ->site('')
     ->submit()
     ->setTimeOut(20) // Время ожидания ответа от сервера
     ->get();
